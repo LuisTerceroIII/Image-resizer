@@ -18,12 +18,14 @@ public class LoadingThread extends SwingWorker<Boolean, Integer> {
 	private JLabel _chooseFolder;
 	private JLabel _imageCheck;
 	private JButton _start;
+	private JButton _selectFolder;
 	
-	public LoadingThread(JProgressBar progBar , JLabel chooseFolder,  JLabel imageCheck, JButton start) {
+	public LoadingThread(JProgressBar progBar , JLabel chooseFolder,  JLabel imageCheck, JButton start,JButton selectFolder) {
 		_progBar = progBar;
 		_chooseFolder = chooseFolder;
 		_imageCheck = imageCheck;
 		_start = start;
+		_selectFolder = selectFolder;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class LoadingThread extends SwingWorker<Boolean, Integer> {
 		_imageCheck.setIcon(null);
 		_start.setEnabled(false);
 		_progBar.setIndeterminate(true);	
+		_selectFolder.setEnabled(false);
 		ResizeImages images = new ResizeImages(_chooseFolder.getText());
 		images.resizeImages();
 		return true;
@@ -41,6 +44,7 @@ public class LoadingThread extends SwingWorker<Boolean, Integer> {
 		_progBar.setIndeterminate(false);
 		_progBar.setValue(100);
 		_start.setEnabled(true);
+		_selectFolder.setEnabled(true);
 		try {
 			BufferedImage completedImg = ImageIO.read(getClass().getResource("check.png"));
 			_imageCheck.setIcon(new ImageIcon(completedImg));

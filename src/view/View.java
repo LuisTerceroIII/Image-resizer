@@ -27,6 +27,7 @@ public class View {
 	private JProgressBar _progressBar;
 	private JLabel _chooseFolder;
 	private JButton _start;
+	private JButton _selectFolder;
 
 	/**
 	 * Launch the application.
@@ -94,8 +95,8 @@ public class View {
 	}
 
 	private void setFolderSelection() {
-		JButton selectFolder = new JButton("Select Folder");
-		selectFolder.addActionListener(new ActionListener() {
+		_selectFolder = new JButton("Select Folder");
+		_selectFolder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -110,15 +111,15 @@ public class View {
 				}
 			}
 		});
-		selectFolder.setBounds(259, 292, 117, 23);
-		_frame.getContentPane().add(selectFolder);
+		_selectFolder.setBounds(259, 292, 117, 23);
+		_frame.getContentPane().add(_selectFolder);
 	}
 
 	private void setStartButtom() {
 		_start = new JButton("Start");
 		_start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoadingThread processImages = new LoadingThread(_progressBar,_chooseFolder,_imageCheck,_start);
+				LoadingThread processImages = new LoadingThread(_progressBar,_chooseFolder,_imageCheck,_start, _selectFolder);
 				_progressBar.setValue(0);
 				processImages.execute();
 			}
