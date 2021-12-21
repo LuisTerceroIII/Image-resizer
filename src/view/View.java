@@ -139,7 +139,7 @@ public class View {
 	}
 
 	private void setTitle(String title) {
-		_title = new JLabel(title);
+		_title = new JLabel("Image Resizer");
 		_title.setFont(new Font("Tahoma", Font.PLAIN, 37));
 		_title.setHorizontalAlignment(SwingConstants.CENTER);
 		_title.setBounds(0, 27, 633, 53);
