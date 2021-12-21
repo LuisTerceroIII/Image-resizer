@@ -23,8 +23,10 @@ public class View {
 	private JFrame _frame;
 	private JLabel _title;
 	private JLabel _imageFolder;
+	private JLabel _imageCheck;
 	private JProgressBar _progressBar;
 	private JLabel _chooseFolder;
+	private JButton _start;
 
 	/**
 	 * Launch the application.
@@ -59,6 +61,7 @@ public class View {
 		setFrame();
 		setTitle("Resize Images");
 		setFolderImage();
+		setCompletedIcon();
 		setProgressBar();
 		setChooseFolder();
 		setStartButtom();
@@ -68,7 +71,7 @@ public class View {
 
 	private void setFrame() {
 		_frame = new JFrame();
-		_frame.setTitle(" Luis Espinoza");
+		_frame.setTitle("Luis Espinoza");
 		_frame.setBackground(Color.WHITE);
 		_frame.getContentPane().setBackground(Color.WHITE);
 		_frame.setBounds(100, 100, 649, 557);
@@ -84,6 +87,11 @@ public class View {
 		info.setBounds(375, 270, 47, 64);
 		_frame.getContentPane().add(info);
 	}
+	
+	private void setCompletedIcon() throws IOException {
+		_imageCheck = new JLabel();
+		_frame.getContentPane().add(_imageCheck);
+	}
 
 	private void setFolderSelection() {
 		JButton selectFolder = new JButton("Select Folder");
@@ -94,6 +102,8 @@ public class View {
 				int response = fileChooser.showOpenDialog(_frame);
 				if(response == JFileChooser.APPROVE_OPTION) {
 					_chooseFolder.setText(fileChooser.getSelectedFile().toString());
+					_progressBar.setValue(0);
+					_imageCheck.setIcon(null);
 					
 				} else {
 					_chooseFolder.setText("The file open operation was cancelled");
@@ -105,15 +115,16 @@ public class View {
 	}
 
 	private void setStartButtom() {
-		JButton start = new JButton("Start");
-		start.addActionListener(new ActionListener() {
+		_start = new JButton("Start");
+		_start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoadingThread processImages = new LoadingThread(_progressBar,_chooseFolder);
+				LoadingThread processImages = new LoadingThread(_progressBar,_chooseFolder,_imageCheck,_start);
+				_progressBar.setValue(0);
 				processImages.execute();
 			}
 		});
-		start.setBounds(273, 428, 89, 23);
-		_frame.getContentPane().add(start);
+		_start.setBounds(273, 428, 89, 23);
+		_frame.getContentPane().add(_start);
 	}
 
 	private void setChooseFolder() {
@@ -126,6 +137,7 @@ public class View {
 
 	private JProgressBar setProgressBar() {
 		_progressBar = new JProgressBar();
+		_progressBar.setForeground(Color.PINK);
 		_progressBar.setBounds(98, 358, 445, 41);
 		_frame.getContentPane().add(_progressBar);
 		return _progressBar;
@@ -134,15 +146,15 @@ public class View {
 	private void setFolderImage() throws IOException {
 		BufferedImage folderImage = ImageIO.read(getClass().getResource("folder.png"));
 		_imageFolder = new JLabel(new ImageIcon(folderImage));
-		_imageFolder.setBounds(0, 87, 623, 172);
+		_imageFolder.setBounds(10, 87, 623, 172);
 		_frame.getContentPane().add(_imageFolder);
 	}
 
 	private void setTitle(String title) {
-		_title = new JLabel("Image Resizer");
+		_title = new JLabel("Images Resizer");
 		_title.setFont(new Font("Tahoma", Font.PLAIN, 37));
 		_title.setHorizontalAlignment(SwingConstants.CENTER);
-		_title.setBounds(0, 27, 633, 53);
+		_title.setBounds(10, 23, 633, 53);
 		_frame.getContentPane().add(_title);
 	}
 }
